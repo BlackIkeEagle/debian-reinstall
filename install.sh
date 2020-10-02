@@ -147,9 +147,9 @@ else
     mount /dev/"${blockdev}${partitionextra}${bootpart}" /mnt/boot
 fi
 
-pacman -Sy --noconfirm deboostrap debian-archive-keyring
+pacman -Sy --noconfirm debootstrap debian-archive-keyring
 
-deboostrap \
+debootstrap \
     --arch=amd64 \
     --variant=minbase \
     buster \
