@@ -2,6 +2,8 @@
 
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
 blockdev="%%blockdev%%"
 
 echo "grub-pc grub-pc/install_devices $blockdev" \
