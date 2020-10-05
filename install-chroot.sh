@@ -12,7 +12,11 @@ echo "grub-pc grub-pc/install_devices $blockdev" \
 apt-get install -y linux-image-amd64 systemd systemd-sysv apparmor ifupdown less grub-pc tzdata locales localepurge
 
 sed -e 's/#en_US/en_US/g' -e 's/#nl_BE/nl_BE/g' -i /etc/locale.gen
-locale-gen
+
+cat <<EOF > /etc/network/interfaces.d/lo
+auto lo
+iface lo inet loopback
+EOF
 
 useradd -m ike
 usermod -aG sudo,wheel ike
