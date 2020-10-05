@@ -157,6 +157,22 @@ debootstrap \
     /mnt \
     http://deb.debian.org/debian
 
+# generate fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+# set timezone
+ln -sf /usr/share/zoneinfo/Europe/Brussels /mnt/etc/localtime
+
+# generate locales for en_US
+echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+
+# keyboard
+echo "KEYMAP=be-latin1" > /mnt/etc/vconsole.conf
+
+# set hostname
+echo "debian-$randstring" > /mnt/etc/hostname
+echo "127.0.1.1 debian-$randstring" >> /mnt/etc/hosts
+
 # install grub-pc via chroot
-sed -e "s/%%blockdev%%/\/dev\/${blockdev}/" -i install-grub.sh
-arch-chroot /mnt /bin/bash < <(cat install-grub.sh)
+sed -e "s/%%blockdev%%/\/dev\/${blockdev}/" -i install-chroot.sh
+arch-chroot /mnt /bin/bash < <(cat install-chroot.sh)
