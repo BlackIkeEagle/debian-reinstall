@@ -152,7 +152,6 @@ pacman -Sy --noconfirm debootstrap debian-archive-keyring
 debootstrap \
     --arch=amd64 \
     --variant=minbase \
-    --include=linux-image-amd64,systemd,systemd-sysv,apparmor,ifupdown,less \
     buster \
     /mnt \
     http://deb.debian.org/debian
