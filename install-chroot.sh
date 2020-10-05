@@ -23,3 +23,5 @@ useradd -m ike
 usermod -aG sudo,wheel ike
 echo "ike:123456" | chpasswd
 chage -d 0 ike
+
+grub-mkconfig -o /boot/grub/grub.cfg
