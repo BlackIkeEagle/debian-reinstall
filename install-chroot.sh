@@ -20,7 +20,7 @@ iface lo inet loopback
 EOF
 
 useradd -m ike
-usermod -aG sudo,wheel ike
+usermod -aG sudo ike
 echo "ike:123456" | chpasswd
 chage -d 0 ike
 
