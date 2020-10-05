@@ -3,6 +3,7 @@
 set -e
 
 export DEBIAN_FRONTEND=noninteractive
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 blockdev="%%blockdev%%"
 
