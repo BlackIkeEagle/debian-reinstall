@@ -159,6 +159,12 @@ debootstrap \
 # generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
+# swap
+mkswap -L swap /dev/"${blockdev}${partitionextra}${swappart}"
+
+printf "\n/dev/%s  none  swap  defaults  0  0" "${blockdev}${partitionextra}${swappart}" \
+    >> /mnt/etc/fstab
+
 # set timezone
 ln -sf /usr/share/zoneinfo/Europe/Brussels /mnt/etc/localtime
 
