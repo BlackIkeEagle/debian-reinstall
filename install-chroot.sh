@@ -10,7 +10,7 @@ blockdev="%%blockdev%%"
 echo "grub-pc grub-pc/install_devices multiselect $blockdev" \
     | debconf-set-selections
 
-apt-get install -y linux-image-amd64 systemd systemd-sysv apparmor ifupdown less grub-pc tzdata locales localepurge
+apt-get install -y linux-image-amd64 systemd systemd-sysv apparmor ifupdown less grub-pc tzdata locales localepurge sudo
 
 sed -e 's/#en_US/en_US/g' -e 's/#nl_BE/nl_BE/g' -i /etc/locale.gen
 
