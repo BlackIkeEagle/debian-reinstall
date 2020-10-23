@@ -53,7 +53,6 @@ mkfs.ext4 -L ROOT /dev/"${blockdev}${partitionextra}${rootpart}"
 rootmountoptions="rw,noatime,data=ordered,discard"
 mount -o $rootmountoptions /dev/"${blockdev}${partitionextra}${rootpart}" /mnt
 
-bootloaderpackage=grub
 mkdir -p /mnt/boot
 mount /dev/"${blockdev}${partitionextra}${bootpart}" /mnt/boot
 
