@@ -80,10 +80,10 @@ printf "\n/dev/%s  none  swap  defaults  0  0" "${blockdev}${partitionextra}${sw
 ln -sf /usr/share/zoneinfo/Europe/Brussels /mnt/etc/localtime
 
 # generate locales for en_US
-echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
+echo "LANG=en_US.UTF-8" > /mnt/etc/default/locale
 
 # keyboard
-echo "KEYMAP=be-latin1" > /mnt/etc/vconsole.conf
+echo "KEYMAP=be-latin1" > /mnt/etc/default/keyboard
 
 # set hostname
 echo "debian-$randstring" > /mnt/etc/hostname
