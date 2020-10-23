@@ -1,0 +1,49 @@
+{
+    "variables": {
+        "iso_url": "https://mirror.pkgbuild.com/iso/latest/archlinux-{{isotime \"2006.01\"}}.01-x86_64.iso",
+        "iso_checksum_url": "https://mirror.pkgbuild.com/iso/latest/sha1sums.txt",
+        "disk_size": "20480",
+        "headless": "true",
+        "boot_wait": "60s",
+        "box_version": "buster"
+    },
+    "builders": [
+        {
+            "type": "qemu",
+            "name": "libvirt",
+            "cpus": 2,
+            "memory": 1024,
+            "disk_interface": "virtio",
+            "disk_size": "{{user `disk_size`}}",
+            "disk_compression": true,
+            "iso_checksum": "file:{{user `iso_checksum_url`}}",
+            "iso_url": "{{user `iso_url`}}",
+            "net_device": "virtio-net",
+            "ssh_username": "admin",
+            "ssh_password": "admin123!",
+            "ssh_port": 22,
+            "ssh_timeout": "2000s",
+            "shutdown_command": "sudo systemctl poweroff",
+            "headless": "{{user `headless`}}",
+            "http_directory": "./",
+            "boot_command": [
+                "<enter><wait10><wait10><enter><enter>",
+                "curl -O 'http://{{.HTTPIP}}:{{.HTTPPort}}/install{,-chroot}.sh'<enter><wait>",
+                "bash install.sh && systemctl reboot<enter>vda<enter>regular<enter><enter><wait>"
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "test.sh",
+            "pause_before": "10s"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "output": "output/debian-{{user `box_version`}}-{{ .Provider }}.box"
+        }
+    ]
+}
