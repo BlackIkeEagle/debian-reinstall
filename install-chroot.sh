@@ -6,6 +6,8 @@ export DEBIAN_FRONTEND=noninteractive
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 blockdev="%%blockdev%%"
+admin_user="%%admin_user%%"
+admin_pass="%%admin_pass%%"
 
 echo "grub-pc grub-pc/install_devices multiselect $blockdev" \
     | debconf-set-selections
@@ -26,14 +28,12 @@ iface $iface inet dhcp
 EOF
 done
 
-useradd -m admin
-usermod -aG sudo admin
-echo "admin:admin123!" | chpasswd
+useradd -m "$admin_user"
+usermod -aG sudo "$admin_user"
+echo "$admin_user:$admin_pass" | chpasswd
 
 echo "admin ALL=(root) NOPASSWD: /usr/bin/systemctl poweroff" \
     > /etc/sudoers.d/admin
 chmod 0440 /etc/sudoers.d/admin
-
-systemctl enable ssh.service
 
 grub-mkconfig -o /boot/grub/grub.cfg

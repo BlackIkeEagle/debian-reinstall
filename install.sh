@@ -2,6 +2,12 @@
 
 set -e
 
+echo -n "enter the admin user name: "
+read -r admin_user
+
+echo -n "enter the admin user's pass: "
+read -r admin_pass
+
 echo -n "enter the block device's name (sda,nvme1): "
 read -r blockdev
 
@@ -11,6 +17,14 @@ read -r nvmedisk
 echo -n "check blocks (yes|no (default)): "
 read -r checkblocks
 
+if [[ "$admin_user" == "" ]]; then
+    echo "no admin user given"
+    exit 1
+fi
+if [[ "$admin_pass" == "" ]]; then
+    echo "no admin pass given"
+    exit 1
+fi
 if [[ "$blockdev" == "" ]]; then
     echo "no blockdev given"
     exit 1
@@ -75,6 +89,10 @@ mkswap -L swap /dev/"${blockdev}${partitionextra}${swappart}"
 printf "\n/dev/%s  none  swap  defaults  0  0" "${blockdev}${partitionextra}${swappart}" \
     >> /mnt/etc/fstab
 
+# enable ssh service
+ln -sf /lib/systemd/system/ssh.service \
+    /mnt/etc/systemd/system/multi-user.target.wants/ssh.service
+
 # set timezone
 ln -sf /usr/share/zoneinfo/Europe/Brussels /mnt/etc/localtime
 
@@ -89,5 +107,8 @@ echo "debian-$randstring" > /mnt/etc/hostname
 echo "127.0.1.1 debian-$randstring" >> /mnt/etc/hosts
 
 # install grub-pc via chroot
-sed -e "s/%%blockdev%%/\/dev\/${blockdev}/" -i install-chroot.sh
+sed -e "s/%%blockdev%%/\/dev\/${blockdev}/" \
+    -e "s/%%admin_user%%/${admin_user}/" \
+    -e "s/%%admin_pass%%/${admin_pass}/" \
+    -i install-chroot.sh
 arch-chroot /mnt /bin/bash < <(cat install-chroot.sh)
